@@ -1,0 +1,78 @@
+device:
+  server_model: "GB300"
+  hostname: "gb300-rackf12-node01"
+  serial_number: "SN-GB300-0001"
+  rack_id: "F12"
+  station: "DEBUG_9625"
+  firmware_version: "SP_SIM_1.1.0"
+  board_type: "SP_BOARD_VIRTUAL"
+  origin: "RPI4_SP_SIM"
+
+edge_node:
+  enabled: true
+  node_id: "EDGE-RPI4-F12-01"
+  node_type: "ATSYS_EDGE_NODE"
+  room_id: "ROOM_3"
+  rack_id: "F12"
+  station: "DEBUG_9625"
+  site: "FOXCONN_8303"
+  zone: "RACK_FRONT"
+  sku: "GB300"
+  capabilities:
+    - "ilom_event_emission"
+    - "heartbeat"
+    - "prism_sync"
+    - "hmi_remote_control"
+
+runtime:
+  mode: "manual"   # manual | random | scripted
+  sqlite_path: "data/events.db"
+  jsonl_path: "data/logs/ilom_events.jsonl"
+  print_to_console: true
+  save_to_sqlite: true
+  save_to_jsonl: true
+  http_post_enabled: false
+  http_post_url: "http://127.0.0.1:8080/api/edge/events"
+  http_timeout_seconds: 5
+  retry_failed_http: true
+
+heartbeat:
+  enabled: true
+  interval_seconds: 30
+  endpoint: "http://127.0.0.1:8080/api/edge/heartbeat"
+
+prism_sync:
+  enabled: true
+  interval_seconds: 20
+  status_endpoint: "http://127.0.0.1:8080/api/edge/status"
+  commands_pull_endpoint: "http://127.0.0.1:8080/api/edge/commands/pull"
+  command_results_endpoint: "http://127.0.0.1:8080/api/edge/command-results"
+  auth_token: "CHANGE_ME_PRISM_TOKEN"
+
+hmi_api:
+  enabled: true
+  host: "0.0.0.0"
+  port: 8090
+  auth_token: "CHANGE_ME_EDGE_TOKEN"
+
+timing:
+  default_delay_seconds: 2
+
+profiles:
+  enabled:
+    - "power_fault_chain"
+    - "mb2_bent_pin_chain"
+    - "osfp_left_disconnected"
+    - "cx7_host_nic_down"
+    - "bp_i2c_fail_ssd_not_present"
+    - "hmc_not_responding"
+
+random_mode:
+  interval_seconds: 15
+  profile_weights:
+    power_fault_chain: 25
+    mb2_bent_pin_chain: 20
+    osfp_left_disconnected: 15
+    cx7_host_nic_down: 15
+    bp_i2c_fail_ssd_not_present: 15
+    hmc_not_responding: 10

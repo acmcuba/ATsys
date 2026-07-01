@@ -1,0 +1,51 @@
+device:
+  server_model: "GB300"
+  hostname: "gb300-rackf12-node01"
+  serial_number: "SN-GB300-0001"
+  rack_id: "F12"
+  station: "DEBUG_9625"
+  firmware_version: "SP_SIM_1.0.0"
+  board_type: "SP_BOARD_VIRTUAL"
+  origin: "RPI4_SP_SIM"
+
+runtime:
+  mode: "manual"   # manual | scripted | random
+  sqlite_path: "data/events.db"
+  jsonl_path: "data/logs/ilom_events.jsonl"
+  print_to_console: true
+  save_to_sqlite: true
+  save_to_jsonl: true
+  http_post_enabled: false
+  http_post_url: "http://127.0.0.1:8080/api/ilom/events"
+  http_timeout_seconds: 5
+  retry_failed_http: true
+
+# When true, mark locally saved events as "pending" if HTTP delivery failed,
+# so they can be retried later by retry_pending.py or future ATsys ingestion workers.
+delivery:
+  pending_status_on_http_failure: true
+
+timing:
+  default_delay_seconds: 2
+
+profiles:
+  enabled:
+    - "power_fault_chain"
+    - "mb2_bent_pin_chain"
+    - "osfp_left_disconnected"
+    - "cx7_host_nic_down"
+    - "bp_i2c_fail_ssd_not_present"
+    - "hmc_not_responding"
+
+random_mode:
+  interval_seconds: 15
+  profile_weights:
+    power_fault_chain: 25
+    mb2_bent_pin_chain: 20
+    osfp_left_disconnected: 15
+    cx7_host_nic_down: 15
+    bp_i2c_fail_ssd_not_present: 15
+    hmc_not_responding: 10
+
+scripted:
+  script_path: "examples/sample_profile_run.json"

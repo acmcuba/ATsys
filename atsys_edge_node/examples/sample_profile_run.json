@@ -1,0 +1,5 @@
+[
+  {"profile": "power_fault_chain", "wait_before_seconds": 1},
+  {"profile": "mb2_bent_pin_chain", "wait_before_seconds": 3},
+  {"profile": "cx7_host_nic_down", "wait_before_seconds": 5}
+]

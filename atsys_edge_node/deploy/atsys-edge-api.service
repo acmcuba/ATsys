@@ -1,0 +1,17 @@
+[Unit]
+Description=ATsys Edge Node Local API
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/atsys_edge_node
+Environment="PATH=/home/pi/atsys_edge_node/.venv/bin"
+ExecStart=/home/pi/atsys_edge_node/.venv/bin/uvicorn ilom_sim.hmi_api:app --host 0.0.0.0 --port 8090
+Restart=always
+RestartSec=5
+StandardOutput=append:/home/pi/atsys_edge_node/data/logs/api_service.log
+StandardError=append:/home/pi/atsys_edge_node/data/logs/api_service_error.log
+
+[Install]
+WantedBy=multi-user.target

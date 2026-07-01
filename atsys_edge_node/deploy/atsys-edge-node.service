@@ -1,0 +1,17 @@
+[Unit]
+Description=ATsys Edge Node (Raspberry Pi SP Virtual + Heartbeat + Prism Sync)
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/atsys_edge_node
+Environment="PATH=/home/pi/atsys_edge_node/.venv/bin"
+ExecStart=/home/pi/atsys_edge_node/.venv/bin/python /home/pi/atsys_edge_node/main.py
+Restart=always
+RestartSec=5
+StandardOutput=append:/home/pi/atsys_edge_node/data/logs/service.log
+StandardError=append:/home/pi/atsys_edge_node/data/logs/service_error.log
+
+[Install]
+WantedBy=multi-user.target
