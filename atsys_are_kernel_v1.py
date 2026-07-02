@@ -1,9 +1,24 @@
+from pathlib import Path
+import logging
+
 from datetime import datetime
 import platform
 import socket
 import os
 
 KERNEL_VERSION = "1.0.0"
+LOG_DIR = Path("logs")
+LOG_DIR.mkdir(exist_ok=True)
+
+LOG_FILE = LOG_DIR / "atsys_are_kernel.log"
+
+logging.basicConfig(
+    filename=LOG_FILE,
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)s | %(message)s"
+)
+
+
 
 MODULES = [
     "Mission Manager",
@@ -28,10 +43,33 @@ def check_status(name):
 
 
 def main():
+
+    # ===============================================
+    # STEP 1 - Detect System Information
+    # ===============================================
+
+
     node_name = socket.gethostname()
     system = platform.system()
     python_version = platform.python_version()
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+
+    # ===============================================
+    # STEP 2 - Initialize Logging System
+    # ===============================================
+
+    logging.info("==============================================")
+    logging.info("ATsys ARE Kernel Starting")
+    logging.info(f"Node: {node_name}")
+    logging.info(f"Operating System: {system}")
+    logging.info(f"Python: {python_version}")
+
+
+    # ==============================================
+    # STEP 3 - Display Kernel Information
+    # ==============================================
+
 
     line()
     print("        ATSYS ADAPTIVE RESILIENCE ENGINE")
